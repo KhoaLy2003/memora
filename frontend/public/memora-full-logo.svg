@@ -1,0 +1,6 @@
+<svg width="220" height="220" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="80" r="45" fill="none" stroke="#312e81" stroke-width="12" stroke-dasharray="210 70"/>
+                        <path d="M100 35 A 45 45 0 0 1 145 80" stroke="#f59e0b" stroke-width="12" fill="none" stroke-linecap="round"/>
+                        <text x="100" y="95" font-family="sans-serif" font-weight="bold" font-size="40" fill="#312e81" text-anchor="middle">M</text>
+                        <text x="100" y="165" font-family="sans-serif" font-weight="bold" font-size="32" fill="#312e81" text-anchor="middle">Memora</text>
+                    </svg>

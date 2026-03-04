@@ -1,0 +1,34 @@
+import { useAuthStore } from "@/store/authStore";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export async function fetchWithAuth<T>(
+  url: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const token = useAuthStore.getState().token;
+
+  const headers = new Headers(options.headers);
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+  if (!(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const response = await fetch(`${BASE_URL}${url}`, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      useAuthStore.getState().logout();
+      window.location.href = "/login?error=session_expired";
+    }
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Something went wrong");
+  }
+
+  return response.json();
+}
