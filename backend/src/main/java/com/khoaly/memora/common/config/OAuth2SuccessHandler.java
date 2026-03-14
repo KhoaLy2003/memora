@@ -18,6 +18,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
+    private final String frontendUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -37,7 +38,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtils.generateToken(user.getId(), user.getEmail());
 
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/login-success")
+        String targetUrl = UriComponentsBuilder.fromUriString(frontendUrl + "/login-success")
                 .queryParam("token", token)
                 .build().toUriString();
 
