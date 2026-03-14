@@ -71,16 +71,8 @@ export function EditGroupModal({
                 className="w-full p-2 rounded-md border text-sm h-24 bg-background"
               />
             </div>
-            <div className="space-y-2">
-              <label>{t("createGroup.avatarUrl")}</label>
-              <input
-                value={avatarUrl}
-                onChange={(e) => setAvatarUrl(e.target.value)}
-                className="w-full p-2 rounded-md border text-sm bg-background"
-              />
-            </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex gap-3">
             <Button type="button" variant="outline" onClick={onClose}>
               {t("createGroup.cancel")}
             </Button>

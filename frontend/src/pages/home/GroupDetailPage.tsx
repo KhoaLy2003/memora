@@ -286,7 +286,15 @@ export default function GroupDetailPage() {
     );
 }
 
-function MemberCard({ member, groupId, currentRole }: { member: any, groupId: string, currentRole?: string }) {
+function MemberCard({
+    member,
+    groupId,
+    currentRole,
+}: {
+    member: any;
+    groupId: string;
+    currentRole?: string;
+}) {
     const removeMember = useRemoveMember(groupId);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const { t } = useTranslation();
@@ -302,7 +310,7 @@ function MemberCard({ member, groupId, currentRole }: { member: any, groupId: st
 
     const confirmRemove = () => {
         removeMember.mutate(member.userId, {
-            onSuccess: () => setShowRemoveModal(false)
+            onSuccess: () => setShowRemoveModal(false),
         });
     };
 
@@ -318,36 +326,63 @@ function MemberCard({ member, groupId, currentRole }: { member: any, groupId: st
                 variant="destructive"
                 isLoading={removeMember.isPending}
             />
-            <div className="flex items-center gap-4 p-5 bg-card border rounded-3xl hover:border-primary/30 transition-all shadow-sm group">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold text-xl overflow-hidden group-hover:scale-105 transition-transform">
+
+            <div className="flex items-start gap-4 p-4 sm:p-5 bg-card border rounded-2xl sm:rounded-3xl hover:border-primary/30 transition-all shadow-sm group">
+
+                {/* Avatar */}
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl overflow-hidden shrink-0">
                     {member.avatarUrl ? (
-                        <img src={member.avatarUrl} alt={member.fullName} className="w-full h-full object-cover" />
+                        <img
+                            src={member.avatarUrl}
+                            alt={member.fullName}
+                            className="w-full h-full object-cover"
+                        />
                     ) : (
                         member.fullName.charAt(0).toUpperCase()
                     )}
                 </div>
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                        <h4 className="font-bold truncate">{member.fullName}</h4>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0 space-y-1">
+
+                    {/* Name + Role */}
+                    <div className="flex items-center justify-between gap-2">
+                        <h4 className="font-semibold sm:font-bold truncate">
+                            {member.fullName}
+                        </h4>
+
                         {member.role === "OWNER" && (
-                            <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-black uppercase rounded-full">
+                            <span className="shrink-0 px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold uppercase rounded-full">
                                 {t("group.memberOwner")}
                             </span>
                         )}
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">{member.email}</p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                    <div className="text-[10px] text-muted-foreground font-medium italic">
-                        {t("group.memberJoined", {
-                            date: new Date(member.joinedAt).toLocaleDateString(),
-                        })}
+
+                    {/* Email */}
+                    <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                        {member.email}
+                    </p>
+
+                    {/* Bottom row */}
+                    <div className="flex items-center justify-between pt-1">
+
+                        <span className="text-[10px] sm:text-xs text-muted-foreground">
+                            {t("group.memberJoined", {
+                                date: new Date(member.joinedAt).toLocaleDateString(),
+                            })}
+                        </span>
+
+                        {canRemove && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={handleRemove}
+                                className="h-7 px-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100 transition-all"
+                            >
+                                {t("group.memberRemove")}
+                            </Button>
+                        )}
                     </div>
-                    {canRemove && (
-                        <Button variant="ghost" size="sm" onClick={handleRemove} className="opacity-100 sm:opacity-0 group-hover:opacity-100 h-7 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive transition-all px-2">
-                            {t("group.memberRemove")}
-                        </Button>
-                    )}
                 </div>
             </div>
         </>

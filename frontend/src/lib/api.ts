@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/store/authStore";
+import i18n from "@/i18n";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -12,6 +13,10 @@ export async function fetchWithAuth<T>(
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
   }
+
+  // Set Accept-Language based on current i18n language
+  headers.set("Accept-Language", i18n.language);
+
   if (!(options.body instanceof FormData)) {
     headers.set("Content-Type", "application/json");
   }
@@ -20,6 +25,7 @@ export async function fetchWithAuth<T>(
     ...options,
     headers,
   });
+
 
   if (!response.ok) {
     if (response.status === 401) {

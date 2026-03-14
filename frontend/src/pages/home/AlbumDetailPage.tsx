@@ -20,6 +20,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import {
@@ -48,6 +49,8 @@ export default function AlbumDetailPage() {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showLightboxDeleteModal, setShowLightboxDeleteModal] = useState(false);
+
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   const deleteMedia = useDeleteMedia(albumId!);
   const downloadMedia = useDownloadMedia();
@@ -236,7 +239,8 @@ export default function AlbumDetailPage() {
           <p className="text-sm font-medium text-muted-foreground w-full sm:w-auto text-center sm:text-left">
             {selectedIds.length === 0
               ? t("album.selectionHintEmpty")
-              : `${selectedIds.length} item${selectedIds.length > 1 ? "s" : ""} selected`}
+              // : `${selectedIds.length} item${selectedIds.length > 1 ? "s" : ""} selected`}
+              : t("album.selectionHintCount", { count: selectedIds.length })}
           </p>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <Button
@@ -307,6 +311,11 @@ export default function AlbumDetailPage() {
         open={index >= 0}
         close={() => setIndex(-1)}
         controller={{ closeOnBackdropClick: false }}
+        plugins={[Zoom]}
+        render={{
+          buttonPrev: isMobile ? () => null : undefined,
+          buttonNext: isMobile ? () => null : undefined,
+        }}
       // render={{
       //   controls: () => (
       //     <div className="absolute top-6 right-16 flex gap-2 z-[1000] group">
