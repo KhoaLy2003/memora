@@ -19,7 +19,9 @@
     "registerTitle": "Create account",
     "registerSubtitle": "Join Memora and start archiving your memories",
     "alreadyHaveAccount": "Already have an account?",
-    "goToLogin": "Go to login"
+    "goToLogin": "Go to login",
+    "completingLogin": "Completing login...",
+    "pleaseWait": "Please wait while we set things up."
   },
   "layout": {
     "footer": "© {{year}} Memora. All rights reserved."
@@ -196,4 +198,3 @@
     "passwordsDontMatch": "Passwords don't match"
   }
 }
-

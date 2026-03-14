@@ -56,32 +56,32 @@ export default function Dashboard() {
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-700">
       {/* Hero Summary Section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-4 border-b">
         <div className="space-y-1">
-          <h1 className="text-4xl font-extrabold tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             {t("dashboard.title")}
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base md:text-lg">
             {t("dashboard.subtitle")}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           {isJoining ? (
             <form
               onSubmit={handleJoin}
-              className="flex items-center gap-2 animate-in slide-in-from-right-2"
+              className="flex items-center gap-2 animate-in slide-in-from-right-2 w-full sm:w-auto"
             >
               <input
                 value={joinCode}
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                 placeholder={t("dashboard.joinPlaceholder")}
-                className="h-12 px-4 rounded-xl border-2 border-primary/20 focus:border-primary outline-hidden w-40 font-black tracking-widest text-center"
+                className="h-10 md:h-12 px-3 md:px-4 rounded-xl border-2 border-primary/20 focus:border-primary outline-hidden flex-1 sm:w-32 md:w-40 font-black tracking-widest text-center text-sm md:text-base"
                 maxLength={8}
               />
               <Button
                 type="submit"
                 disabled={joinGroup.isPending}
-                className="h-12 rounded-xl"
+                className="h-10 md:h-12 rounded-xl text-sm md:text-base flex-1 sm:flex-none"
               >
                 {t("dashboard.join")}
               </Button>
@@ -89,7 +89,7 @@ export default function Dashboard() {
                 type="button"
                 variant="ghost"
                 onClick={() => setIsJoining(false)}
-                className="h-12 rounded-xl"
+                className="h-10 md:h-12 rounded-xl text-sm md:text-base"
               >
                 {t("dashboard.cancel")}
               </Button>
@@ -98,15 +98,15 @@ export default function Dashboard() {
             <Button
               variant="outline"
               onClick={() => setIsJoining(true)}
-              className="h-12 px-6 rounded-xl gap-2 text-lg border-2"
+              className="h-10 md:h-12 px-4 md:px-6 rounded-xl gap-2 text-sm md:text-lg border-2 w-full sm:w-auto"
             >
-              <KeyRound className="w-5 h-5" />
+              <KeyRound className="w-4 h-4 md:w-5 md:h-5" />
               {t("dashboard.joinToggle")}
             </Button>
           )}
-          <Link to="/groups/new">
-            <Button className="h-12 px-6 rounded-xl shadow-lg hover:shadow-primary/20 transition-all gap-2 text-lg">
-              <Plus className="w-5 h-5" />
+          <Link to="/groups/new" className="w-full sm:w-auto">
+            <Button className="h-10 md:h-12 px-4 md:px-6 rounded-xl shadow-lg hover:shadow-primary/20 transition-all gap-2 text-sm md:text-lg w-full">
+              <Plus className="w-4 h-4 md:w-5 md:h-5" />
               {t("dashboard.newSpace")}
             </Button>
           </Link>

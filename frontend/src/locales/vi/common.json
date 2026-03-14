@@ -19,7 +19,9 @@
     "registerTitle": "Tạo tài khoản",
     "registerSubtitle": "Tham gia Memora và bắt đầu lưu giữ ký ức",
     "alreadyHaveAccount": "Đã có tài khoản?",
-    "goToLogin": "Đăng nhập"
+    "goToLogin": "Đăng nhập",
+    "completingLogin": "Hoàn tất đăng nhập...",
+    "pleaseWait": "Vui lòng chờ trong giây lát."
   },
   "layout": {
     "footer": "© {{year}} Memora. Đã đăng ký bản quyền."

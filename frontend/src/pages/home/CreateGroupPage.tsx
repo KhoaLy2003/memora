@@ -44,7 +44,7 @@ export default function CreateGroupPage() {
                 </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-card border p-10 rounded-[2.5rem] shadow-xl relative overflow-hidden">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-8 bg-card border p-6 md:p-10 rounded-4xl md:rounded-[2.5rem] shadow-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
 
                 <div className="space-y-6">

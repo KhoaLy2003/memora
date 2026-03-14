@@ -16,7 +16,6 @@ import {
   Trash2,
   MoreHorizontal,
   Calendar,
-  Clock,
   Image as ImageIcon,
   CheckCircle2,
 } from "lucide-react";
@@ -69,12 +68,12 @@ export default function AlbumDetailPage() {
     );
   };
 
-  const handleLightboxDelete = () => {
-    const media = mediaList[index];
-    if (media) {
-      setShowLightboxDeleteModal(true);
-    }
-  };
+  // const handleLightboxDelete = () => {
+  //   const media = mediaList[index];
+  //   if (media) {
+  //     setShowLightboxDeleteModal(true);
+  //   }
+  // };
 
   const confirmLightboxDelete = () => {
     const media = mediaList[index];
@@ -88,21 +87,21 @@ export default function AlbumDetailPage() {
     });
   };
 
-  const handleLightboxDownload = () => {
-    const media = mediaList[index];
-    if (media) {
-      downloadMedia.mutate(media.id, {
-        onSuccess: (url) => {
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = media.fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        },
-      });
-    }
-  };
+  // const handleLightboxDownload = () => {
+  //   const media = mediaList[index];
+  //   if (media) {
+  //     downloadMedia.mutate(media.id, {
+  //       onSuccess: (url) => {
+  //         const link = document.createElement("a");
+  //         link.href = url;
+  //         link.download = media.fileName;
+  //         document.body.appendChild(link);
+  //         link.click();
+  //         document.body.removeChild(link);
+  //       },
+  //     });
+  //   }
+  // };
 
   const handleBulkDownload = async () => {
     const items = mediaList.filter((m) => selectedIds.includes(m.id));
@@ -178,24 +177,24 @@ export default function AlbumDetailPage() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
-              <h1 className="text-4xl font-extrabold tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
                 {album.name}
               </h1>
-              <div className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-bold text-muted-foreground border dark:border-zinc-700">
+              <div className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-[10px] md:text-xs font-bold text-muted-foreground border dark:border-zinc-700">
                 {t("album.itemsCount", { count: mediaList.length })}
               </div>
             </div>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-base md:text-lg">
               {album.description || "A collection of shared moments."}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             {mediaList.length > 0 && (
               <Button
                 variant={selectionMode ? "default" : "outline"}
                 size="lg"
-                className="rounded-xl h-12 px-4 text-sm font-semibold"
+                className="rounded-xl h-10 md:h-12 px-3 md:px-4 text-xs md:sm font-semibold flex-1 md:flex-none"
                 onClick={toggleSelectionMode}
               >
                 {selectionMode ? t("album.selectCancel") : t("album.select")}
@@ -213,14 +212,14 @@ export default function AlbumDetailPage() {
                 />
                 <Button
                   size="lg"
-                  className="rounded-xl h-12 px-6 gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+                  className="rounded-xl h-10 md:h-12 px-4 md:px-6 gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all text-xs md:sm flex-1 md:flex-none"
                   onClick={handleUploadClick}
                   disabled={uploadMutation.isPending}
                 >
                   {uploadMutation.isPending ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   ) : (
-                    <Upload className="w-5 h-5" />
+                    <Upload className="w-4 h-4 md:w-5 md:h-5" />
                   )}
                   {uploadMutation.isPending
                     ? t("album.uploading")
@@ -233,16 +232,17 @@ export default function AlbumDetailPage() {
       </div>
 
       {selectionMode && (
-        <div className="flex items-center justify-between rounded-2xl border bg-muted/40 px-4 py-3">
-          <p className="text-sm font-medium text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border bg-muted/40 px-4 py-3 sticky top-20 z-40 backdrop-blur-md">
+          <p className="text-sm font-medium text-muted-foreground w-full sm:w-auto text-center sm:text-left">
             {selectedIds.length === 0
               ? t("album.selectionHintEmpty")
               : `${selectedIds.length} item${selectedIds.length > 1 ? "s" : ""} selected`}
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <Button
               size="sm"
               variant="outline"
+              className="flex-1 sm:flex-none"
               disabled={selectedIds.length === 0 || downloadMedia.isPending}
               onClick={handleBulkDownload}
             >
@@ -253,6 +253,7 @@ export default function AlbumDetailPage() {
               <Button
                 size="sm"
                 variant="destructive"
+                className="flex-1 sm:flex-none"
                 disabled={selectedIds.length === 0 || deleteMedia.isPending}
                 onClick={handleBulkDelete}
               >
@@ -268,18 +269,18 @@ export default function AlbumDetailPage() {
       {mediaList.length === 0 ? (
         <div
           onClick={handleUploadClick}
-          className="flex flex-col items-center justify-center p-32 border-2 border-dashed rounded-[3rem] bg-zinc-50 dark:bg-zinc-900 shadow-inner text-center space-y-8"
+          className="flex flex-col items-center justify-center p-8 md:p-32 border-2 border-dashed rounded-4xl md:rounded-[3rem] bg-zinc-50 dark:bg-zinc-900 shadow-inner text-center space-y-6 md:space-y-8"
         >
-          <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary group animate-pulse">
-            <Upload className="w-12 h-12 group-hover:scale-110 transition-transform" />
+          <div className="w-16 h-16 md:w-24 md:h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary group animate-pulse">
+            <Upload className="w-8 h-8 md:w-12 md:h-12 group-hover:scale-110 transition-transform" />
           </div>
-          <div className="space-y-3">
-            <h3 className="text-3xl font-bold">{t("album.emptyTitle")}</h3>
-            <p className="max-w-[450px] text-muted-foreground text-lg leading-relaxed">
+          <div className="space-y-2 md:space-y-3">
+            <h3 className="text-2xl md:text-3xl font-bold">{t("album.emptyTitle")}</h3>
+            <p className="max-w-[450px] text-muted-foreground text-base md:text-lg leading-relaxed">
               {t("album.emptyDescription")}
             </p>
           </div>
-          <div className="text-sm font-bold text-muted-foreground/60 uppercase tracking-widest border-t pt-8 w-64 border-zinc-200 dark:border-zinc-800">
+          <div className="text-[10px] md:text-sm font-bold text-muted-foreground/60 uppercase tracking-widest border-t pt-6 md:pt-8 w-48 md:w-64 border-zinc-200 dark:border-zinc-800">
             {t("album.emptyTypes")}
           </div>
         </div>
@@ -305,44 +306,66 @@ export default function AlbumDetailPage() {
         slides={mediaList.map((m: any) => ({ src: m.downloadUrl }))}
         open={index >= 0}
         close={() => setIndex(-1)}
+        controller={{ closeOnBackdropClick: false }}
+      // render={{
+      //   controls: () => (
+      //     <div className="absolute top-6 right-16 flex gap-2 z-[1000] group">
+      //       <Button
+      //         variant="ghost"
+      //         size="icon"
+      //         onClick={(e) => {
+      //           e.stopPropagation();
+      //           handleLightboxDownload();
+      //         }}
+      //         className="w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 hover:text-white backdrop-blur-md pointer-events-auto"
+      //       >
+      //         <Download className="w-5 h-5" />
+      //       </Button>
+
+      //       <Button
+      //         variant="ghost"
+      //         size="icon"
+      //         onClick={(e) => {
+      //           e.stopPropagation();
+      //           handleLightboxDelete();
+      //         }}
+      //         className="w-10 h-10 rounded-full bg-black/60 text-white hover:bg-destructive hover:text-white backdrop-blur-md pointer-events-auto"
+      //       >
+      //         <Trash2 className="w-5 h-5" />
+      //       </Button>
+      //     </div>
+      //   ),
+      // }}
       />
 
-      {index >= 0 && mediaList[index] && (
-        <div className="fixed top-6 right-6 z-99999">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+      {/* {index >= 0 && mediaList[index] && createPortal(
+        <div className="fixed inset-0 pointer-events-none z-[1000000]">
+          <div className="absolute top-6 right-6 flex gap-2 pointer-events-auto">
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLightboxDownload}
+              className="w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 backdrop-blur-md"
+            >
+              <Download className="w-5 h-5" />
+            </Button>
+
+            {!isViewer && (
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 backdrop-blur-md border border-white/10"
+                onClick={handleLightboxDelete}
+                className="w-10 h-10 rounded-full bg-black/60 text-white hover:bg-destructive hover:text-white backdrop-blur-md"
               >
-                <MoreHorizontal className="w-5 h-5" />
+                <Trash2 className="w-5 h-5" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="rounded-xl p-2 min-w-[160px]"
-            >
-              <DropdownMenuItem
-                onClick={handleLightboxDownload}
-                className="rounded-lg gap-2 cursor-pointer"
-              >
-                <Download className="w-4 h-4" />
-                Download
-              </DropdownMenuItem>
-              {!isViewer && (
-                <DropdownMenuItem
-                  onClick={handleLightboxDelete}
-                  className="rounded-lg gap-2 cursor-pointer text-destructive focus:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Delete
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
+            )}
+
+          </div>
+        </div>,
+        document.body
+      )} */}
 
       <ConfirmModal
         isOpen={showLightboxDeleteModal}
@@ -475,45 +498,38 @@ export function MediaItem({
           </div>
         </div>
 
-        {/* Hover Actions */}
-        <div className="absolute inset-x-0 bottom-0 p-6 bg-linear-to-t from-black via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-4">
-          <div className="space-y-1">
-            <h4 className="text-white font-bold tracking-tight text-sm line-clamp-1">
+        {/* Actions - Visible on hover (desktop) or always accessible via tap overlay (mobile) */}
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 bg-linear-to-t from-black via-black/80 to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-3 md:gap-4 translate-y-2 md:translate-y-0 group-hover:translate-y-0">
+          <div className="space-y-0.5 md:space-y-1">
+            <h4 className="text-white font-bold tracking-tight text-[10px] md:text-sm line-clamp-1">
               {media.fileName}
             </h4>
-            <div className="flex items-center gap-3 text-white/70 text-xs font-semibold">
+            <div className="flex items-center gap-2 md:gap-3 text-white/70 text-[10px] md:text-xs font-semibold">
               <span className="flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
+                <Calendar className="w-2.5 h-2.5 md:w-3 md:h-3" />
                 {new Date(media.uploadedAt).toLocaleDateString()}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {new Date(media.uploadedAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-2 pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between gap-2 pt-3 md:pt-4 border-t border-white/10">
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={handleDownload}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
               </Button>
               {!isViewer && (
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handleDelete}
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-destructive hover:text-white text-white backdrop-blur-md"
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-destructive hover:text-white text-white backdrop-blur-md"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 </Button>
               )}
             </div>
@@ -524,9 +540,9 @@ export function MediaItem({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10"
                   >
-                    <MoreHorizontal className="w-4 h-4" />
+                    <MoreHorizontal className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

@@ -40,7 +40,7 @@ export function ConfirmModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[440px] p-8">
+            <DialogContent className="max-w-[90vw] sm:max-w-[440px] rounded-3xl p-6 sm:p-8 overflow-hidden">
                 <DialogHeader className="space-y-4">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${variant === 'destructive' ? 'bg-destructive/10 text-destructive' : 'bg-primary/10 text-primary'}`}>
                         <AlertTriangle className="w-6 h-6" />

@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import api from "@/api/axios";
+import { useTranslation } from "react-i18next";
 
 export default function LoginSuccess() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const login = useAuthStore((state) => state.login);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const token = searchParams.get("token");
@@ -49,8 +51,8 @@ export default function LoginSuccess() {
         <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center space-y-4">
                 <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
-                <h2 className="text-xl font-medium">Completing login...</h2>
-                <p className="text-muted-foreground">Please wait while we set things up.</p>
+                <h2 className="text-xl font-medium">{t("auth.completingLogin")}</h2>
+                <p className="text-muted-foreground">{t("auth.pleaseWait")}</p>
             </div>
         </div>
     );

@@ -48,7 +48,7 @@ export function EditGroupModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[95vw] sm:max-w-[425px] rounded-3xl p-6 sm:p-8">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>{t("createGroup.editSettings")}</DialogTitle>
