@@ -9,9 +9,9 @@
 		<version>3.2.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.khoaly.memora</groupId>
+	<groupId>com.memora</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>memora-backend</name>
 	<description>Memora - Group-Based Photo Sharing Platform Backend</description>
 	<properties>

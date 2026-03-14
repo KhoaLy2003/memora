@@ -36,5 +36,5 @@ logs/
 Thumbs.db
 
 .agent/
-backend/.env
-frontend/.env
+backend/.env*
+frontend/.env*
