@@ -15,6 +15,7 @@ interface AuthState {
   isLoading: boolean;
   login: (user: User, token: string) => void;
   logout: () => void;
+  updateUser: (user: Partial<User>) => void;
   finishInitialLoad: () => void;
 }
 
@@ -34,8 +35,13 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
           isLoading: false,
         }),
+      updateUser: (updatedFields) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...updatedFields } : null,
+        })),
       finishInitialLoad: () => set({ isLoading: false }),
     }),
+
 
     {
       name: "auth-storage",

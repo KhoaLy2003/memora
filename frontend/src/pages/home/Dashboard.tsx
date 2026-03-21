@@ -31,15 +31,12 @@ export default function Dashboard() {
       onSuccess: () => {
         setJoinCode("");
         setIsJoining(false);
-        notify.success(t("dashboard.joinSuccess", "Joined group successfully."));
+        notify.success(t("dashboard.joinSuccess"));
       },
       onError: (error: any) => {
         const message =
           error?.message ||
-          t(
-            "dashboard.joinError",
-            "Failed to join group. Please check the invite code.",
-          );
+          t("dashboard.joinError");
         notify.error(message);
       },
     });
@@ -199,13 +196,12 @@ function GroupCard({ group }: { group: Group }) {
           </div>
           <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
             <div
-              className={`h-full transition-all duration-1000 ease-out ${
-                percent > 90
+              className={`h-full transition-all duration-1000 ease-out ${percent > 90
                   ? "bg-destructive"
                   : percent > 70
                     ? "bg-accent"
                     : "bg-primary"
-              }`}
+                }`}
               style={{ width: `${percent}%` }}
             />
           </div>

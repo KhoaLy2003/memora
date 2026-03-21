@@ -47,7 +47,7 @@ export function ConfirmModal({
                     </div>
                     <div className="space-y-2">
                         <DialogTitle className="text-2xl font-extrabold">{title}</DialogTitle>
-                        <DialogDescription className="text-base text-muted-foreground leading-relaxed">
+                        <DialogDescription className="text-base text-muted-foreground leading-relaxed whitespace-pre-line">
                             {description}
                         </DialogDescription>
                     </div>

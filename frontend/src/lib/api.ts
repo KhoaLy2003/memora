@@ -16,6 +16,8 @@ export async function fetchWithAuth<T>(
 
   // Set Accept-Language based on current i18n language
   headers.set("Accept-Language", i18n.language);
+  // Always accept JSON so Spring Security returns 401/4xx instead of 302 Redirect to /login
+  headers.set("Accept", "application/json");
 
   if (!(options.body instanceof FormData)) {
     headers.set("Content-Type", "application/json");

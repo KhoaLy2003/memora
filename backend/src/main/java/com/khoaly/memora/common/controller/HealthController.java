@@ -20,7 +20,7 @@ public class HealthController {
         Map<String, Object> response = new HashMap<>();
         response.put("status", "UP");
         response.put("timestamp", Instant.now());
-        response.put("service", "Memora Backend");
+        response.put("service", "Memora Server");
         response.put("version", "1.0.0");
 
         return ResponseEntity.ok(response);

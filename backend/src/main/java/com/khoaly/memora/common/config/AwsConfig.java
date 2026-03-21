@@ -15,8 +15,11 @@ import java.net.URI;
 @Configuration
 public class AwsConfig {
 
-    @Value("${storage.endpoint}")
-    private String endpoint;
+    @Value("${storage.internal-endpoint}")
+    private String internalEndpoint;
+
+    @Value("${storage.public-endpoint}")
+    private String publicEndpoint;
 
     @Value("${storage.access-key}")
     private String accessKey;
@@ -30,7 +33,7 @@ public class AwsConfig {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .endpointOverride(URI.create(endpoint))
+                .endpointOverride(URI.create(internalEndpoint))
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKey, secretKey)))
@@ -43,7 +46,7 @@ public class AwsConfig {
     @Bean
     public S3Presigner s3Presigner() {
         return S3Presigner.builder()
-                .endpointOverride(URI.create(endpoint))
+                .endpointOverride(URI.create(publicEndpoint))
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKey, secretKey)))

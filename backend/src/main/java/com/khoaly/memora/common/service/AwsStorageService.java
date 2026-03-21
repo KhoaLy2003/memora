@@ -52,7 +52,10 @@ public class AwsStorageService implements StorageService {
                     .getObjectRequest(builder -> builder.bucket(bucket).key(path).build())
                     .build();
 
-            return s3Presigner.presignGetObject(presignRequest).url().toString();
+            return s3Presigner.presignGetObject(presignRequest)
+                    .url()
+                    .toString()
+                    .replace("https://api.memora.id.vn/", "https://api.memora.id.vn/storage/");
         } catch (Exception e) {
             log.error("Error generating presigned URL for: {}", path, e);
             return null;

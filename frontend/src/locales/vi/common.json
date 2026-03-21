@@ -79,7 +79,9 @@
     "emptyCta": "Tạo nhóm đầu tiên",
     "storageLabel": "Dung lượng",
     "storageUsed": "{{percent}}% đã dùng",
-    "updatesLabel": "Cập nhật mới"
+    "updatesLabel": "Cập nhật mới",
+    "joinSuccess": "Tham gia nhóm thành công.",
+    "joinError": "Không thể tham gia nhóm. Vui lòng kiểm tra lại mã mời."
   },
   "group": {
     "backToSpaces": "Quay lại không gian",
@@ -109,7 +111,9 @@
     "memberRemoveTitle": "Gỡ thành viên",
     "memberRemoveDesc": "Bạn có chắc muốn gỡ \"{{name}}\" khỏi nhóm?",
     "albumDeleteTitle": "Xóa album",
-    "albumDeleteDesc": "Bạn có chắc muốn xóa \"{{name}}\"? Tất cả ảnh và video trong bộ sưu tập này sẽ bị xóa vĩnh viễn.",
+    "albumDeleteDesc": "Bạn có chắc muốn xóa \"{{name}}\"?\n Tất cả ảnh và video trong bộ sưu tập này sẽ bị xóa vĩnh viễn.",
+    "mediaDeleteLine1": "Bạn có chắc muốn xóa \"{{fileName}}\"?",
+    "mediaDeleteLine2": "Tất cả ảnh và video trong bộ sưu tập này sẽ bị xóa vĩnh viễn.",
     "albumDeleteConfirm": "Xóa bộ sưu tập",
     "leaveTitleOwner": "Xóa nhóm",
     "leaveDescOwner": "Bạn có chắc muốn xóa hoàn toàn {{name}}? Tất cả thành viên và album sẽ bị xóa vĩnh viễn.",
@@ -183,8 +187,16 @@
     "privacy": "Quyền riêng tư"
   },
   "profile": {
-    "title": "Hồ sơ người dùng",
-    "joined": "Tham gia tháng 6 2025"
+    "title": "Hồ sơ cá nhân",
+    "joined": "Tham gia ngày {{date}}",
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "name": "Họ và tên",
+    "email": "Địa chỉ email",
+    "avatar": "Đường dẫn ảnh đại diện",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
+    "success": "Cập nhật hồ sơ thành công",
+    "error": "Cập nhật hồ sơ thất bại"
   },
   "confirm": {
     "defaultConfirm": "Xác nhận",

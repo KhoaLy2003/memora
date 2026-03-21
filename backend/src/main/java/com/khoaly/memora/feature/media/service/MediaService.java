@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -56,19 +56,30 @@ public class MediaService {
                 group.getId(), album.getId(), baseId, extension);
 
         // Upload original
-        storageService.uploadFile(originalPath, file.getInputStream(), file.getContentType(), file.getSize());
+        String contentType = file.getContentType();
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
 
-        // Process thumbnail if it's an image
-        String thumbPath = null;
-        if (Objects.requireNonNull(file.getContentType()).startsWith("image")) {
+        if (contentType.startsWith("image")) {
+            // Buffer in memory only for images to allow multiple reads (storage + thumbnail)
+            byte[] fileBytes = file.getBytes();
+            storageService.uploadFile(originalPath, new ByteArrayInputStream(fileBytes), contentType, file.getSize());
+
+            // Process thumbnail
             try {
-                byte[] thumbData = imageProcessorService.createThumbnail(file.getInputStream());
-                thumbPath = String.format("groups/%s/albums/%s/thumbs/%s.jpg",
+                byte[] thumbData = imageProcessorService.createThumbnail(new ByteArrayInputStream(fileBytes));
+                String thumbPath = String.format("groups/%s/albums/%s/thumbs/%s.jpg",
                         group.getId(), album.getId(), baseId);
                 storageService.uploadFile(thumbPath, new ByteArrayInputStream(thumbData), "image/jpeg",
                         thumbData.length);
             } catch (Exception e) {
                 log.error("Failed to create thumbnail for {}", file.getOriginalFilename(), e);
+            }
+        } else {
+            // STREAM directly for videos to avoid OOM (Out Of Memory)
+            try (InputStream inputStream = file.getInputStream()) {
+                storageService.uploadFile(originalPath, inputStream, contentType, file.getSize());
             }
         }
 
@@ -77,7 +88,7 @@ public class MediaService {
         media.setStoragePath(originalPath);
         // We could also store thumbPath in metadata or a separate column
         media.setSizeBytes(file.getSize());
-        media.setFileType(file.getContentType().startsWith("video") ? Media.MediaType.VIDEO : Media.MediaType.IMAGE);
+        media.setFileType(contentType.startsWith("video") ? Media.MediaType.VIDEO : Media.MediaType.IMAGE);
         media.setAlbum(album);
         media.setUploader(uploader);
 

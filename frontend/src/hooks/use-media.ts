@@ -14,11 +14,11 @@ export function useMedia(albumId: string) {
 export function useUploadMedia(albumId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (files: FileList) => {
+    mutationFn: (files: File[]) => {
       const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i], files[i].name);
-      }
+      files.forEach((file) => {
+        formData.append("files", file, file.name);
+      });
       return fetchWithAuth<ApiResponse<Media[]>>(
         `/albums/${albumId}/media/upload`,
         {

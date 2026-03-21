@@ -79,7 +79,9 @@
     "emptyCta": "Create your first group",
     "storageLabel": "Storage",
     "storageUsed": "{{percent}}% Used",
-    "updatesLabel": "New updates"
+    "updatesLabel": "New updates",
+    "joinSuccess": "Joined group successfully.",
+    "joinError": "Failed to join group. Please check the invite code."
   },
   "group": {
     "backToSpaces": "Back to Spaces",
@@ -109,7 +111,7 @@
     "memberRemoveTitle": "Remove Member",
     "memberRemoveDesc": "Are you sure you want to remove \"{{name}}\" from the group?",
     "albumDeleteTitle": "Delete Album",
-    "albumDeleteDesc": "Are you sure you want to delete \"{{name}}\"? This will permanently remove all photos and videos within this collection.",
+    "albumDeleteDesc": "Are you sure you want to delete \"{{name}}\"?\n This will permanently remove all photos and videos within this collection.",
     "albumDeleteConfirm": "Delete Collection",
     "leaveTitleOwner": "Delete Group",
     "leaveDescOwner": "Are you sure you want to completely delete {{name}}? This will remove all members and permanently wipe all albums.",
@@ -184,7 +186,15 @@
   },
   "profile": {
     "title": "User Profile",
-    "joined": "Joined June 2025"
+    "joined": "Joined {{date}}",
+    "editProfile": "Edit Profile",
+    "name": "Full Name",
+    "email": "Email Address",
+    "avatar": "Avatar URL",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "success": "Profile updated successfully",
+    "error": "Failed to update profile"
   },
   "confirm": {
     "defaultConfirm": "Confirm",

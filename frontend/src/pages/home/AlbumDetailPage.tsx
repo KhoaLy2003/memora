@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import {
@@ -49,6 +50,7 @@ export default function AlbumDetailPage() {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showLightboxDeleteModal, setShowLightboxDeleteModal] = useState(false);
+  const [isBatchUploading, setIsBatchUploading] = useState(false);
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
@@ -140,9 +142,21 @@ export default function AlbumDetailPage() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      uploadMutation.mutate(e.target.files);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const filesArr = Array.from(e.target.files);
+      setIsBatchUploading(true);
+      try {
+        await uploadMutation.mutateAsync(filesArr);
+      } catch (error) {
+        console.error("Failed to upload files:", error);
+      } finally {
+        setIsBatchUploading(false);
+        // Clear the input so the same files can be selected again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
     }
   };
 
@@ -209,6 +223,7 @@ export default function AlbumDetailPage() {
                 <input
                   type="file"
                   multiple
+                  accept="image/*,video/*"
                   ref={fileInputRef}
                   className="hidden"
                   onChange={handleFileChange}
@@ -217,14 +232,14 @@ export default function AlbumDetailPage() {
                   size="lg"
                   className="rounded-xl h-10 md:h-12 px-4 md:px-6 gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all text-xs md:sm flex-1 md:flex-none"
                   onClick={handleUploadClick}
-                  disabled={uploadMutation.isPending}
+                  disabled={isBatchUploading}
                 >
-                  {uploadMutation.isPending ? (
+                  {isBatchUploading ? (
                     <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   ) : (
                     <Upload className="w-4 h-4 md:w-5 md:h-5" />
                   )}
-                  {uploadMutation.isPending
+                  {isBatchUploading
                     ? t("album.uploading")
                     : t("album.upload")}
                 </Button>
@@ -307,11 +322,28 @@ export default function AlbumDetailPage() {
 
       <Lightbox
         index={index}
-        slides={mediaList.map((m: any) => ({ src: m.downloadUrl }))}
+        slides={mediaList.map((m: any) => {
+          const isVid = m.fileType === "VIDEO" || m.fileName.toLowerCase().endsWith(".mp4");
+          if (isVid) {
+            return {
+              type: "video",
+              width: 1280,
+              height: 720,
+              poster: `${m.downloadUrl}#t=0.1`,
+              sources: [
+                {
+                  src: m.downloadUrl,
+                  type: "video/mp4",
+                },
+              ],
+            };
+          }
+          return { src: m.downloadUrl };
+        })}
         open={index >= 0}
         close={() => setIndex(-1)}
         controller={{ closeOnBackdropClick: false }}
-        plugins={[Zoom]}
+        plugins={[Zoom, Video]}
         render={{
           buttonPrev: isMobile ? () => null : undefined,
           buttonNext: isMobile ? () => null : undefined,
@@ -465,11 +497,11 @@ export function MediaItem({
         isLoading={deleteMedia.isPending}
       />
       <div
-        className={`relative group break-inside-avoid rounded-4xl overflow-hidden bg-zinc-900 border-4 border-transparent hover:border-primary/20 transition-all duration-500 shadow-md hover:shadow-2xl ${isSelected ? "border-primary/60" : ""}`}
+        className={`relative group break-inside-avoid rounded-4xl overflow-hidden bg-zinc-900 border-4 border-transparent hover:border-primary/20 transition-all duration-500 shadow-md hover:shadow-2xl min-h-[200px] ${isSelected ? "border-primary/60" : ""}`}
       >
         {/* Visual */}
         <div
-          className="relative aspect-auto cursor-zoom-in"
+          className="relative aspect-auto cursor-zoom-in min-h-[200px]"
           onClick={handleCardClick}
         >
           {selectionMode && onToggleSelect && (
@@ -484,16 +516,26 @@ export function MediaItem({
               {isSelected && <CheckCircle2 className="w-4 h-4" />}
             </button>
           )}
-          <img
-            src={media.downloadUrl}
-            alt={media.fileName}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            loading="lazy"
-          />
+          {isVideo ? (
+            <video
+              src={`${media.downloadUrl}#t=0.1`}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              muted
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img
+              src={media.downloadUrl}
+              alt={media.fileName}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+          )}
 
           {isVideo && (
-            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md p-2 rounded-full text-white">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md p-2.5 rounded-full text-white shadow-lg border border-white/10">
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
